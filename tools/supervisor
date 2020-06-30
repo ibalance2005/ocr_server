@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+##-*-coding: utf-8;-*-##
+set -e
+
+DIRNAME="$(cd $(dirname $0) && pwd -P)"
+
+set -a
+source $DIRNAME/env.sh
+set +a
+
+mkdir -p $APP_LOG_DIR
+mkdir -p $APP_TMP_DIR
+
+if [[ "$1" == 'boot']]; then
+    shift
+    exec -l -a supervisorctl -- supvervisord -c $APP_PATH/supvervisord.cfg "$@"
+else
+    exec -l -a supervisorctl -- supvervisorctl -c $APP_PATH/supvervisord.cfg "$@"
+fi
